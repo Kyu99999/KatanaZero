@@ -19,8 +19,7 @@ public class PlayerAttackEffect : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_ANDROID && UNITY_EDITOR
-        if (Input.GetMouseButtonDown(0) && !animator.activeSelf && !player.isDead)
+        if(Input.GetMouseButtonDown(0) && !animator.activeSelf && !player.isDead)
         {
             Vector3 MousePositon = Input.mousePosition;
             MousePositon = camera.ScreenToWorldPoint(MousePositon);
@@ -32,17 +31,5 @@ public class PlayerAttackEffect : MonoBehaviour
             animator.SetActive(true);
             animator.transform.rotation = z;
         }
-#endif
     }   
-
-    public void JoystickAttack(Quaternion degree)
-    {
-        if (!animator.activeSelf && !player.isDead)
-        {
-            Debug.Log(degree);
-            animator.SetActive(true);
-            animator.transform.rotation = degree;
-            
-        }
-    }
 }

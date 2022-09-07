@@ -10,8 +10,6 @@ public class TimeManager : MonoBehaviour
 
     public UIManager uiManager;
 
-    public bool isToggle = false;
-
 
     public bool isBulletTime = true;
     private void FixedUpdate()
@@ -21,7 +19,7 @@ public class TimeManager : MonoBehaviour
     private void Update()
     {
 
-        if ((isToggle || Input.GetKey(KeyCode.LeftShift)) && isBulletTime)
+        if (Input.GetKey(KeyCode.LeftShift) && isBulletTime)
         {
          
             bulletTimer -= Time.unscaledDeltaTime;
@@ -29,7 +27,6 @@ public class TimeManager : MonoBehaviour
             {
                 bulletTimer = 0;
                 isBulletTime = false;
-                isToggle = false;
             }
             Time.timeScale = 0.3f;
         }
@@ -53,17 +50,5 @@ public class TimeManager : MonoBehaviour
         }
 
         uiManager.ControllBattery((int)bulletTimer % 12);
-    }
-
-    public void ControllToggle()
-    {
-        if(isToggle)
-        {
-            isToggle = false;
-        }
-        else if(!isToggle)
-        {
-            isToggle = true;
-        }
     }
 }

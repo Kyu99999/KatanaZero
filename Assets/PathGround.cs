@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PathGround : MonoBehaviour
 {
-    public MoveJoystick moveJoystick;
     public PlatformEffector2D platformEffector;
 
     private void Awake()
@@ -16,7 +15,7 @@ public class PathGround : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            if(Input.GetKey(KeyCode.S) || moveJoystick.GetAxis("Vertical") < 0)
+            if(Input.GetKey(KeyCode.S))
             {
                 platformEffector.surfaceArc = 0;
             }

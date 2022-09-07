@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.SceneManagement;
-using Kino;
-
 public class Storage
 {
     //public Transform replayPlayer;
@@ -29,6 +27,7 @@ public enum ReplayState
 public class ReplayManager : MonoBehaviour
 {
     public Camera camera;
+
     float timer = 1f / 60f;
 
     public ReplayState currentState = ReplayState.SaveMode;
@@ -107,7 +106,7 @@ public class ReplayManager : MonoBehaviour
                     LoadData();
                     count++;
                 }
-                if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(1))
                 {
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
                 }
@@ -134,7 +133,7 @@ public class ReplayManager : MonoBehaviour
                     LoadData();
                     count--;
                 }
-                if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(1))
                 {
                     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 }
