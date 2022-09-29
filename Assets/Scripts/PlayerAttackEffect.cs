@@ -31,5 +31,16 @@ public class PlayerAttackEffect : MonoBehaviour
             animator.SetActive(true);
             animator.transform.rotation = z;
         }
-    }   
+    }
+
+    public void JoystickAttack(Quaternion degree)
+    {
+        if (!animator.activeSelf && !player.isDead)
+        {
+            Debug.Log(degree);
+            animator.SetActive(true);
+            animator.transform.rotation = degree;
+
+        }
+    }
 }

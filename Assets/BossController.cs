@@ -42,8 +42,8 @@ public class BossController : MonoBehaviour
     private float oriLaserTimer = 0.2f;
     private float laserTimer = 0.2f;
 
-    public float laserTurnOn = 0.2f;
-    public float oriLaserTurnOn = 0.2f;
+    public float laserTurnOnTimer = 0.2f;
+    public float oriLaserTurnOnTimer = 0.2f;
 
     public Vector2 savePlayerPosition;
     public bool isLaserTarget = false;
@@ -96,12 +96,12 @@ public class BossController : MonoBehaviour
 
     //**** Sky Laser Attack ****//
     public Laser laserPrefab;
-    private int skyLaserCount = 2;
+    private int flyLaserCount = 2;
     private int oriSkyLaserCount = 2;
-    public bool isSkyLaserAttack = false;
+    public bool isflyLaserAttack = false;
     public bool readyToLaser = true;
 
-    public int updateNum = 0;
+    public int orderNum = 0;
 
     private void Awake()
     {
@@ -133,7 +133,7 @@ public class BossController : MonoBehaviour
             switch (currentState)
             {
                 case BossState.Phase1:
-                    switch (updateNum)
+                    switch (orderNum)
                     {
                         case 0:
                             Laser();
@@ -143,7 +143,7 @@ public class BossController : MonoBehaviour
                             if(delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
 
@@ -155,7 +155,7 @@ public class BossController : MonoBehaviour
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         case 4:
@@ -166,23 +166,23 @@ public class BossController : MonoBehaviour
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         default:
-                            updateNum = 0;
+                            orderNum = 0;
                             break;
                     }
                     break;
                 case BossState.Phase2:
-                    switch (updateNum)
+                    switch (orderNum)
                     {
                         case -3:
                             delay -= Time.deltaTime;
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         case -2:
@@ -193,7 +193,7 @@ public class BossController : MonoBehaviour
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         case 0:
@@ -204,7 +204,7 @@ public class BossController : MonoBehaviour
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         case 2:
@@ -215,7 +215,7 @@ public class BossController : MonoBehaviour
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         case 4:
@@ -226,31 +226,31 @@ public class BossController : MonoBehaviour
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         default:
-                            if (updateNum < 0)
+                            if (orderNum < 0)
                             {
-                                updateNum++;
+                                orderNum++;
                             }
                             else
-                                updateNum = 0;
+                                orderNum = 0;
                             break;
                     }
                     break;
                 case BossState.Phase3:
-                    switch (updateNum)
+                    switch (orderNum)
                     {
                         case -6:
-                            SkyLaserAttack();
+                            FlyLaserAttack();
                             break;
                         case -5:
                             delay -= Time.deltaTime;
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         case -4:
@@ -261,7 +261,7 @@ public class BossController : MonoBehaviour
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         case -2:
@@ -272,7 +272,7 @@ public class BossController : MonoBehaviour
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         case 0:
@@ -283,7 +283,7 @@ public class BossController : MonoBehaviour
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         case 2:
@@ -294,7 +294,7 @@ public class BossController : MonoBehaviour
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         case 4:
@@ -305,28 +305,28 @@ public class BossController : MonoBehaviour
                             if (delay <= 0)
                             {
                                 delay = oriDelay;
-                                updateNum++;
+                                orderNum++;
                             }
                             break;
                         default:
-                            if (updateNum < 0)
+                            if (orderNum < 0)
                             {
-                                updateNum++;
+                                orderNum++;
                             }
                             else
-                                updateNum = 0;
+                                orderNum = 0;
                             break;
                     }
                     break;
                 case BossState.Dead:
                     break;
                 default:
-                    if (updateNum < 0)
+                    if (orderNum < 0)
                     {
-                        updateNum++;
+                        orderNum++;
                     }
                     else
-                        updateNum = 0;
+                        orderNum = 0;
                     break;
             }
         }
@@ -343,11 +343,10 @@ public class BossController : MonoBehaviour
         laserCheckTimer = oriLaserCheckTimer;
         fireLaser = oriFireLaser;
         laserTimer = oriLaserTimer;
-        laserTurnOn = oriLaserTurnOn;
+        laserTurnOnTimer = oriLaserTurnOnTimer;
         isLaserTarget = false;
         line.enabled = false;
 
-        
         jumpAttackUpdateNum = 0;
         jumpTimer = oriJumpTimer;
         shotTimer = oriShotTimer;
@@ -358,11 +357,11 @@ public class BossController : MonoBehaviour
         isDash = false;
 
         sweepAttackNum = 0;
-        laserTurnOn = oriLaserTurnOn;
+        laserTurnOnTimer = oriLaserTurnOnTimer;
         isSweepAttack = false;
 
-        skyLaserCount = oriSkyLaserCount;
-        isSkyLaserAttack = false;
+        flyLaserCount = oriSkyLaserCount;
+        isflyLaserAttack = false;
         readyToLaser = true;
     }
 
@@ -410,7 +409,7 @@ public class BossController : MonoBehaviour
                     }
                     line.enabled = true;
 
-                    TurnOnLaesr();
+                    TurnOnLaser();
                     //line.material = material[2];
 
                     var ray3Pos = new Vector2(transform.position.x, transform.position.y);
@@ -438,10 +437,10 @@ public class BossController : MonoBehaviour
                 break;
             case 3:
                 laserUpdateNum = 0;
-                laserTurnOn = oriLaserTurnOn;
+                laserTurnOnTimer = oriLaserTurnOnTimer;
                 isLaserTarget = false;
                 line.enabled = false;
-                updateNum++;
+                orderNum++;
                 break;
             default:
                 
@@ -450,13 +449,13 @@ public class BossController : MonoBehaviour
 
     }
 
-    public void TurnOnLaesr()
+    public void TurnOnLaser()
     {
-        laserTurnOn -= Time.deltaTime;
+        laserTurnOnTimer -= Time.deltaTime;
         line.startWidth = 0.15f;
-        if (laserTurnOn < 0)
+        if (laserTurnOnTimer < 0)
         {
-            laserTurnOn = oriLaserTurnOn;
+            laserTurnOnTimer = oriLaserTurnOnTimer;
             if (line.material.color == material[0].color)
             {
                 line.material = material[2];
@@ -485,7 +484,7 @@ public class BossController : MonoBehaviour
             SetState();
             animator.Play("Hurt");
             Debug.Log("Hit");
-            updateNum = -6;
+            orderNum = -6;
             currentState++;
             Debug.Log(currentState);
             if(currentState == BossState.Dead)
@@ -570,7 +569,7 @@ public class BossController : MonoBehaviour
                 shotTimer = oriShotTimer;
                 jumpAttackUpdateNum = 0;
                 jumpAttack = false;
-                updateNum++;
+                orderNum++;
                 animator.Play("Idle");
                 LookAtPlayer();
                 break;
@@ -635,7 +634,7 @@ public class BossController : MonoBehaviour
             case 3:
                 daggerUpdateNum = 0;
                 isDaggerAttack = false;
-                updateNum++;
+                orderNum++;
                 LookAtPlayer();
                 break;
             default:
@@ -673,7 +672,7 @@ public class BossController : MonoBehaviour
             case 1:
                 rb.velocity = new Vector2(0, 0);
                 rb.gravityScale = 0;
-                TurnOnLaesr();
+                TurnOnLaser();
                 line.SetPosition(0, startPos.position);
                 var ray3Pos = new Vector2(startPos.position.x, startPos.position.y);
                 var ray4Pos = new Vector2(startPos.right.x, startPos.right.y);
@@ -692,10 +691,10 @@ public class BossController : MonoBehaviour
 
                 break;
             case 2:
-                laserTurnOn = oriLaserTurnOn;
+                laserTurnOnTimer = oriLaserTurnOnTimer;
                 sweepAttackNum = 0;
                 isSweepAttack = false;
-                updateNum = 0;
+                orderNum = 0;
                 break;
             default:
                 break;
@@ -710,15 +709,15 @@ public class BossController : MonoBehaviour
         sweepAttackNum++;
     }
 
-    public void SkyLaserAttack()
+    public void FlyLaserAttack()
     {
-        switch (skyLaserCount)
+        switch (flyLaserCount)
         {
             case 2:
                 if (readyToLaser)
                 {
                     rb.gravityScale = 0f;
-                    Teleport(skyLaserCount);
+                    Teleport(flyLaserCount);
                     animator.Play("TelePortSky");   // 이후 애니메이션에 함수 사용
                     readyToLaser = false;
                 }
@@ -726,7 +725,7 @@ public class BossController : MonoBehaviour
             case 3:
                 if (readyToLaser)
                 {
-                    Teleport(skyLaserCount);
+                    Teleport(flyLaserCount);
                     animator.Play("TelePortSky");   // 이후 애니메이션에 함수 사용
                     readyToLaser = false;
                 }
@@ -734,7 +733,7 @@ public class BossController : MonoBehaviour
             case 4:
                 if (readyToLaser)
                 {
-                    Teleport(skyLaserCount);
+                    Teleport(flyLaserCount);
                     animator.Play("TelePortSky");   // 이후 애니메이션에 함수 사용
                     readyToLaser = false;
                 }
@@ -742,18 +741,18 @@ public class BossController : MonoBehaviour
             case 5:
                 if (readyToLaser)
                 {
-                    Teleport(skyLaserCount);
+                    Teleport(flyLaserCount);
                     animator.Play("TelePortSky");   // 이후 애니메이션에 함수 사용
                     readyToLaser = false;
                 }
                 break;
             case 6:
                 rb.gravityScale = 1f;
-                skyLaserCount = oriSkyLaserCount;
-                isSkyLaserAttack = false;
+                flyLaserCount = oriSkyLaserCount;
+                isflyLaserAttack = false;
                 readyToLaser = true;
                 isSweepAttack = true;
-                updateNum++;
+                orderNum++;
                 // animator.Play("Idle");
                 break;
             default:
@@ -762,11 +761,11 @@ public class BossController : MonoBehaviour
 
     }
 
-    public void MakeSkyLaser()
+    public void MakeFlyLaser()
     {
         
-        laserPrefab.MakeLaser(teleportPos[skyLaserCount]);
-        skyLaserCount++;
+        laserPrefab.MakeLaser(teleportPos[flyLaserCount]);
+        flyLaserCount++;
         readyToLaser = true;
 
     }
@@ -791,11 +790,6 @@ public class BossController : MonoBehaviour
         end.Clear();
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-     
-    }
-
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("GrabWall"))
@@ -811,7 +805,6 @@ public class BossController : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-
         if (collision.gameObject.CompareTag("GrabWall"))
         {
             isGrabbed = false;

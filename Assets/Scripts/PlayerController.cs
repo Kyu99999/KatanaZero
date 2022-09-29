@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Camera camera;
     public DoorAction door;
+    public AttackJoystick attackJoystick;
+
 
     public bool isGround { get; set; } = false;
     private bool isJumping = false;
@@ -181,7 +183,6 @@ public class PlayerController : MonoBehaviour
                 Vector3 MousePositon = Input.mousePosition;
                 
                 MousePositon = camera.ScreenToWorldPoint(MousePositon);
-                Debug.Log(MousePositon.x);
                 if (transform.position.x > MousePositon.x)
                 {
                     spriteRenderer.flipX = true;
@@ -317,6 +318,94 @@ public class PlayerController : MonoBehaviour
     {
          door.Hit();
     }
+
+    public void JoystickRoll()
+    {
+        if (isGround && !readyToRoll)
+        {
+            animator.SetTrigger("Roll");
+            float hor = 0;
+            if (spriteRenderer.flipX == true)
+            {
+                hor = -1f;
+            }
+            else
+                hor = 1f;
+
+            rollPosition = transform.position + new Vector3(hor * rollDistance, 0, 0);
+            readyToRoll = true;
+        }
+    }
+
+    public void JoystickAttack()
+    {
+        attackCount++;
+
+        if (transform.position.x > transform.position.x + attackJoystick.playerDir.x)
+        {
+            spriteRenderer.flipX = true;
+            var dir = transform.position + attackJoystick.playerDir - transform.position;
+            dir.Normalize();
+
+            dir *= 25f;
+
+            if (dir.x > 2.25f)
+            {
+                dir.x = 2.25f;
+            }
+            if (dir.x < -2.25f)
+            {
+                dir.x = -2.25f;
+            }
+            if (dir.y > 2.25f)
+            {
+                dir.y = 2.25f;
+            }
+            if (dir.y < -2.25f)
+            {
+                dir.y = -2.25f;
+            }
+
+            rb.velocity = Vector3.zero;
+            rb.AddForce(new Vector2(dir.x / attackCount, (dir.y + 1.5f) / attackCount), ForceMode2D.Impulse);
+
+            // rb.velocity = new Vector2(dir.x / attackCount, dir.y / attackCount) * speed;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+            var dir = transform.position + attackJoystick.playerDir - transform.position;
+            dir.Normalize();
+
+            dir *= 25f;
+
+            if (dir.x > 2.25f)
+            {
+                dir.x = 2.25f;
+            }
+            if (dir.x < -2.25f)
+            {
+                dir.x = -2.25f;
+            }
+            if (dir.y > 2.25f)
+            {
+                dir.y = 2.25f;
+            }
+            if (dir.y < -2.25f)
+            {
+                dir.y = -2.25f;
+            }
+
+            rb.velocity = Vector3.zero;
+            rb.AddForce(new Vector2(dir.x / attackCount, (dir.y + 1.5f) / attackCount), ForceMode2D.Impulse);
+            //rb.velocity = new Vector2(dir.x / attackCount, dir.y / attackCount) * speed;
+
+        }
+
+        animator.SetTrigger("Attack");
+
+    }
+
 
     private void OnCollisionExit2D(Collision2D collision)
     {

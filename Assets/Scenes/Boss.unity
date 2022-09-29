@@ -363,6 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -884,8 +885,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 618b9399c00d9b64999b881b22fcac1b, type: 2}
   - {fileID: 2100000, guid: e53d4df5350685f43b44db5d5c110523, type: 2}
   - {fileID: 2100000, guid: d9d3612b1f47e7c4d8cdf98a7dbdd8fa, type: 2}
-  laserTurnOn: 0.05
-  oriLaserTurnOn: 0.05
+  laserTurnOnTimer: 0.2
+  oriLaserTurnOnTimer: 0.2
   savePlayerPosition: {x: 0, y: 0}
   isLaserTarget: 0
   jumpAttack_Right:
@@ -925,9 +926,9 @@ MonoBehaviour:
   - {fileID: 1714231476}
   isSweepAttack: 0
   laserPrefab: {fileID: 6128747009533045900, guid: 0a1c8d3efced0be4fbc4a7434104d181, type: 3}
-  isSkyLaserAttack: 0
+  isflyLaserAttack: 0
   readyToLaser: 1
-  updateNum: 0
+  orderNum: 0
 --- !u!120 &527384966
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1413,7 +1414,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.154705, y: 1}
+    m_SensorSize: {x: 1.9041353, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2685,7 +2686,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1562259455}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6638297, y: 0.14902997, z: -11}
+  m_LocalPosition: {x: 0.66382325, y: 0.34140998, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
