@@ -30,16 +30,16 @@ public class PlayerController : MonoBehaviour
     CurrentStatus status = CurrentStatus.Idle;
 
 
-    public Animator animator;
-    public Rigidbody2D rb;
-    public Collider2D col;
-    public SpriteRenderer spriteRenderer;
-    public Camera camera;
-    public DoorAction door;
-    public AttackJoystick attackJoystick;
+    private Animator animator;
+    private Rigidbody2D rb;
+    private Collider2D col;
+    private SpriteRenderer spriteRenderer;
+    private Camera camera;
+    private DoorAction door;
+    private AttackJoystick attackJoystick;
 
 
-    public bool isGround { get; set; } = false;
+    public bool IsGround { get; set; } = false;
     private bool isJumping = false;
     private bool readyToRoll = false;
     private bool isSit = false;
@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
             animator.SetFloat("VelocityY", rb.velocity.y);
             //**** 점프****//
             vertical = Input.GetAxisRaw("Vertical");
-            if (Input.GetKeyDown(KeyCode.W) && isGround)
+            if (Input.GetKeyDown(KeyCode.W) && IsGround)
             {
                 isJumping = true;
                 //rb.velocity = Vector2.up * jumpPower;
@@ -149,10 +149,10 @@ public class PlayerController : MonoBehaviour
             }
 
             //isGround = rb.velocity.y == 0f;
-            animator.SetBool("isGrounded", isGround);
+            animator.SetBool("isGrounded", IsGround);
 
             //**** 구르기****//
-            if (Input.GetKey(KeyCode.S) && !readyToRoll && isGround)    //앉기
+            if (Input.GetKey(KeyCode.S) && !readyToRoll && IsGround)    //앉기
             {
                 isSit = true;
                 animator.SetBool("IsSit", true);
@@ -163,7 +163,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("IsSit", false);
             }
 
-            if (isGround && Input.GetAxisRaw("Horizontal") != 0 && !readyToRoll && isSit && isGround)//구르기
+            if (IsGround && Input.GetAxisRaw("Horizontal") != 0 && !readyToRoll && isSit && IsGround)//구르기
             {
                 animator.SetTrigger("Roll");
 
@@ -230,13 +230,13 @@ public class PlayerController : MonoBehaviour
                 animator.SetTrigger("Attack");
             }
             
-            if (isGround)
+            if (IsGround)
             {
                 attackCount = 0;
             }
 
             //**** 벽타기 ****//
-            if (isGrabbed && !isGround)
+            if (isGrabbed && !IsGround)
             {
                 animator.SetBool("IsGrab", true);
             }
@@ -245,7 +245,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("IsGrab", false);
             }
 
-            if (isGrabbed && Input.GetKeyDown(KeyCode.W) && !isGround)
+            if (isGrabbed && Input.GetKeyDown(KeyCode.W) && !IsGround)
             {
                 spriteRenderer.flipX = !spriteRenderer.flipX;
                 isFlip = true;
@@ -321,7 +321,7 @@ public class PlayerController : MonoBehaviour
 
     public void JoystickRoll()
     {
-        if (isGround && !readyToRoll)
+        if (IsGround && !readyToRoll)
         {
             animator.SetTrigger("Roll");
             float hor = 0;

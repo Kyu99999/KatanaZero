@@ -23,11 +23,11 @@ public class IsGround : MonoBehaviour
         
         if(check)
         {
-            playerController.isGround = true;
+            playerController.IsGround = true;
         }
         else
         {
-            playerController.isGround = false;
+            playerController.IsGround = false;
         }
        
         Debug.DrawRay(transform.position, new Vector3(0,-0.3f,0),Color.black, 0.3f, true);
