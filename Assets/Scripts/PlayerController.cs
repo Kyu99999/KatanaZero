@@ -4,11 +4,17 @@ using UnityEngine;
 
 enum CurrentStatus
 {
-    Idle,
-    IdleToRun,
-    Run,
-    Attack,
-    Jump,
+    IDLE,
+    IDLETORUN,
+    RUN,
+    ATTACK,
+    JUMP,
+    SIT,
+    ROLL,
+    GRABWALL,
+    FLIP,
+    DEAD,
+
  }
 
 public class PlayerController : MonoBehaviour
@@ -27,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     public ReplayManager replayManager;
 
-    CurrentStatus status = CurrentStatus.Idle;
+    CurrentStatus state = CurrentStatus.IDLE;
 
 
     private Animator animator;
@@ -60,44 +66,49 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isDead)
+        switch (state)
         {
-            if (!readyToRoll && !isFlip)        // 좌우 이동
-            {
-                if (isStair && (horizontal < 0))    //계단에서 아래로, 만약 추가로 오른쪽 아래로 내려가는 계단을 만들면 계단의 방향을 알려주는 bool 변수 만들어서 추가하자
+            case CurrentStatus.IDLE:
+                break;
+            case CurrentStatus.IDLETORUN:
+                break;
+            case CurrentStatus.RUN:
+                if (!readyToRoll && !isFlip)        // 좌우 이동
                 {
-                    Vector3 stairdistance = new Vector3(horizontal, -1f, 0);
-                    transform.position += stairdistance * Time.deltaTime * speed;
-                }
-                else
-                {
-                    Vector3 distance = new Vector3(horizontal, 0, 0);
+                    if (isStair && (horizontal < 0))    //계단에서 아래로, 만약 추가로 오른쪽 아래로 내려가는 계단을 만들면 계단의 방향을 알려주는 bool 변수 만들어서 추가하자
+                    {
+                        Vector3 stairdistance = new Vector3(horizontal, -1f, 0);
+                        transform.position += stairdistance * Time.deltaTime * speed;
+                    }
+                    else
+                    {
+                        Vector3 distance = new Vector3(horizontal, 0, 0);
 
-                    transform.position += distance * Time.deltaTime * speed;
+                        transform.position += distance * Time.deltaTime * speed;
+                    }
                 }
-            }
-
-            if (isJumping)
-            {
-                Vector3 distance = new Vector3(0, vertical, 0);
+                break;
+            case CurrentStatus.ATTACK:
+                break;
+            case CurrentStatus.JUMP:
+                Vector3 jumpDistance = new Vector3(0, vertical, 0);
 
                 //transform.position += distance * Time.deltaTime * jumpPower;
                 rb.velocity = Vector2.up * vertical * jumpPower;
                 isJumping = false;
-            }
-
-            if (readyToRoll)
-            {
+                break;
+            case CurrentStatus.SIT:
+                break;
+            case CurrentStatus.ROLL:
                 transform.position = Vector3.Lerp(transform.position, rollPosition, 0.05f);
-            }
-
-            if (isGrabbed && rb.velocity.y < 0) //함수로 만들어서 처리?
-            {
-                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * slidingSpeed);
-            }
-
-            if (isFlip)
-            {
+                break;
+            case CurrentStatus.GRABWALL:
+                if (isGrabbed && rb.velocity.y < 0) //함수로 만들어서 처리?
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * slidingSpeed);
+                }
+                break;
+            case CurrentStatus.FLIP:
                 if (spriteRenderer.flipX == true)
                 {
                     rb.velocity = new Vector2(-0.8f, 0.9f) * speed;
@@ -107,8 +118,13 @@ public class PlayerController : MonoBehaviour
                     rb.velocity = new Vector2(0.8f, 0.9f) * speed;
                 }
                 isFlip = false;
-            }
+                break;
+            case CurrentStatus.DEAD:
+                break;
+            default:
+                break;
         }
+
     }
 
     private void Update()
